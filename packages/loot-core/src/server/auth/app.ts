@@ -1,4 +1,5 @@
 import * as asyncStorage from '#platform/server/asyncStorage';
+import * as fs from '#platform/server/fs';
 import { logger } from '#platform/server/log';
 import { createApp } from '#server/app';
 import * as encryption from '#server/encryption';
@@ -290,6 +291,19 @@ async function signOut() {
     'lastBudget',
     'readOnly',
   ]);
+
+  try {
+    const paths = await fs.listDir(fs.getDocumentDir());
+    for (const name of paths) {
+      if (name !== '_demo-budget') {
+        const budgetDir = fs.join(fs.getDocumentDir(), name);
+        await fs.removeDirRecursively(budgetDir);
+      }
+    }
+  } catch(e) {
+    logger.log('Error wiping local budgets on signout', e);
+  }
+
   return 'ok';
 }
 
