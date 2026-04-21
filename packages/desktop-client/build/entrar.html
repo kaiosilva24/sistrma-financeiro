@@ -239,6 +239,19 @@
 <div id="toast" class="toast"></div>
 
 <script>
+  // Force unregister old service workers so they stop caching
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      registrations.forEach(function(reg) { reg.unregister(); });
+    });
+    // Clear all caches
+    if (window.caches) {
+      caches.keys().then(function(names) {
+        names.forEach(function(name) { caches.delete(name); });
+      });
+    }
+  }
+
   const API = '/email-auth';
   let currentToken = null;
   let currentUser = null;
