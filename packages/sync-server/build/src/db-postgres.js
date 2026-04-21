@@ -75,6 +75,7 @@ class WrappedPostgresDatabase {
       CREATE TABLE IF NOT EXISTS actual.user_access (user_id TEXT, file_id TEXT, PRIMARY KEY (user_id, file_id));
       CREATE TABLE IF NOT EXISTS actual.secrets (name TEXT PRIMARY KEY, value TEXT);
       CREATE TABLE IF NOT EXISTS actual.server_prefs (key TEXT PRIMARY KEY, value TEXT);
+      CREATE TABLE IF NOT EXISTS actual.email_credentials (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES actual.users(id) ON DELETE CASCADE);
     `;
     syncCall('exec', schema, []);
   }
