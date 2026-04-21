@@ -23,10 +23,7 @@ debug(`Project root: '${projectRoot}'`);
 
 export const sqlDir = path.join(__dirname, 'sql');
 
-const actualAppWebBuildPath = path.join(
-  path.dirname(require.resolve('@actual-app/web/package.json')),
-  'build',
-);
+const actualAppWebBuildPath = path.join(projectRoot, '..', 'desktop-client', 'build');
 debug(`Actual web build path: '${actualAppWebBuildPath}'`);
 
 // Custom formats
