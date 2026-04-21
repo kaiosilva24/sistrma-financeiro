@@ -30,8 +30,8 @@
     "typecheck": "tsgo -b && tsc-strict"
   },
   "dependencies": {
-    "@actual-app/core": "workspace:*",
-    "@actual-app/crdt": "workspace:*",
+    "@actual-app/core": "file:../loot-core",
+    "@actual-app/crdt": "file:../crdt",
     "better-sqlite3": "^12.8.0",
     "compare-versions": "^6.1.1"
   },

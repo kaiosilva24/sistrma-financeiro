@@ -186,7 +186,7 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "@actual-app/crdt": "workspace:*",
+    "@actual-app/crdt": "file:../crdt",
     "@types/adm-zip": "^0.5.8",
     "@types/better-sqlite3": "^7.6.13",
     "@types/jlongster__sql.js": "npm:@types/sql.js@latest",

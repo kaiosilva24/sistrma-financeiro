@@ -107,8 +107,8 @@
     "typecheck": "tsgo -b && tsc-strict"
   },
   "devDependencies": {
-    "@actual-app/components": "workspace:*",
-    "@actual-app/core": "workspace:*",
+    "@actual-app/components": "file:../component-library",
+    "@actual-app/core": "file:../loot-core",
     "@babel/core": "^7.29.0",
     "@codemirror/autocomplete": "^6.20.1",
     "@codemirror/language": "^6.12.3",

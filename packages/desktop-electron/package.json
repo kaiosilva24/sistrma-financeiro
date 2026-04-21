@@ -15,13 +15,13 @@
     "e2e": "npx playwright test"
   },
   "dependencies": {
-    "@actual-app/sync-server": "workspace:*",
+    "@actual-app/sync-server": "file:../sync-server",
     "better-sqlite3": "^12.8.0",
     "promise-retry": "^2.0.1"
   },
   "devDependencies": {
-    "@actual-app/core": "workspace:*",
-    "@actual-app/web": "workspace:*",
+    "@actual-app/core": "file:../loot-core",
+    "@actual-app/web": "file:../desktop-client",
     "@electron/notarize": "3.1.1",
     "@electron/rebuild": "^4.0.3",
     "@playwright/test": "1.59.1",

@@ -77,8 +77,8 @@
     "health-check": "yarn build && node build/src/scripts/health-check.js"
   },
   "dependencies": {
-    "@actual-app/crdt": "workspace:*",
-    "@actual-app/web": "workspace:*",
+    "@actual-app/crdt": "file:../crdt",
+    "@actual-app/web": "file:../desktop-client",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.8.0",
     "convict": "^6.2.5",
