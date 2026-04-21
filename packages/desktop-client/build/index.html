@@ -122,50 +122,52 @@
   <body>
     <script>
       (function() {
-        // ============================================================
-        // BLOQUEIO TOTAL: Impede acesso ao login padrao do Actual Budget.
-        // Redireciona SEMPRE para /entrar (login com email+senha).
-        // ============================================================
         var ROTAS_BLOQUEADAS = ['/login', '/bootstrap', '/config-server'];
-        var rotaAtual = window.location.pathname;
 
-        // Bloqueia imediatamente se estiver em rota proibida (hard navigation)
-        for (var i = 0; i < ROTAS_BLOQUEADAS.length; i++) {
-          if (rotaAtual === ROTAS_BLOQUEADAS[i] || rotaAtual.startsWith(ROTAS_BLOQUEADAS[i] + '/')) {
-            window.location.replace('/entrar');
-            throw new Error('Blocked route - redirecting to /entrar');
+        function eRotaBloqueada(p) {
+          for (var i = 0; i < ROTAS_BLOQUEADAS.length; i++) {
+            if (p === ROTAS_BLOQUEADAS[i] || p.startsWith(ROTAS_BLOQUEADAS[i] + '/')) {
+              return true;
+            }
           }
+          return false;
         }
 
-        // Sem sessao ativa? Vai para login
-        var hasSession = localStorage.getItem('sf-session');
-        if (!hasSession) {
+        function bloquearSeNecessario() {
+          var p = window.location.pathname;
+          if (eRotaBloqueada(p)) {
+            // Limpa a sessao porque o Actual Budget fez logout ou redirecionou
+            localStorage.removeItem('sf-session');
+            window.location.replace('/entrar');
+            return true;
+          }
+          return false;
+        }
+
+        // 1) Bloqueia imediatamente se estiver em rota proibida (navegacao direta)
+        if (bloquearSeNecessario()) return;
+
+        // 2) Sem sessao? Vai para /entrar
+        if (!localStorage.getItem('sf-session')) {
           window.location.replace('/entrar');
           return;
         }
 
-        // Intercepta navegacao do React Router para rotas bloqueadas
-        function verificarRota() {
-          var p = window.location.pathname;
-          for (var i = 0; i < ROTAS_BLOQUEADAS.length; i++) {
-            if (p === ROTAS_BLOQUEADAS[i] || p.startsWith(ROTAS_BLOQUEADAS[i] + '/')) {
-              window.location.replace('/entrar');
-              return;
-            }
-          }
-        }
-
-        var origPushState = history.pushState;
+        // 3) Intercepta pushState e replaceState do React Router
+        var origPush = history.pushState;
         history.pushState = function() {
-          origPushState.apply(this, arguments);
-          verificarRota();
+          origPush.apply(this, arguments);
+          bloquearSeNecessario();
         };
-        var origReplaceState = history.replaceState;
+        var origReplace = history.replaceState;
         history.replaceState = function() {
-          origReplaceState.apply(this, arguments);
-          verificarRota();
+          origReplace.apply(this, arguments);
+          bloquearSeNecessario();
         };
-        window.addEventListener('popstate', verificarRota);
+        window.addEventListener('popstate', bloquearSeNecessario);
+
+        // 4) Polling de seguranca a cada 300ms (pega navegacoes async do React)
+        setInterval(bloquearSeNecessario, 300);
       })();
     </script>
     <div id="root"></div>

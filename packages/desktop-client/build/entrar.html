@@ -267,20 +267,33 @@
       }
     } catch(e) {}
 
-    // Check stored session
+    // Verifica sessao salva
     const saved = localStorage.getItem('sf-session');
     if (saved) {
       try {
         const session = JSON.parse(saved);
-        currentToken = session.token;
-        currentUser = session;
-        if (session.role === 'ADMIN') {
-          showAdmin();
-        } else {
-          goToFinanceiro();
+        // Valida o token com o servidor antes de redirecionar
+        // Evita loop infinito quando o token foi invalidado (ex: apos logout)
+        const validateRes = await fetch('/account/validate', {
+          headers: { 'x-actual-token': session.token }
+        });
+        const validateData = await validateRes.json();
+        if (validateData.status === 'ok') {
+          // Token ainda valido - pode entrar
+          currentToken = session.token;
+          currentUser = session;
+          if (session.role === 'ADMIN') {
+            showAdmin();
+          } else {
+            goToFinanceiro();
+          }
+          return;
         }
-        return;
-      } catch(e) { localStorage.removeItem('sf-session'); }
+        // Token invalido (expirado ou logout) - limpa e mostra login
+        localStorage.removeItem('sf-session');
+      } catch(e) {
+        localStorage.removeItem('sf-session');
+      }
     }
 
     show('login-view');
