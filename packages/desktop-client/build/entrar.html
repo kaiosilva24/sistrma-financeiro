@@ -362,9 +362,10 @@
   }
 
   function goToFinanceiro() {
-    // Set the token for Actual Budget and redirect
     if (currentToken) {
+      // Set token that Actual Budget uses internally
       localStorage.setItem('actualbudget-token', currentToken);
+      // sf-session stays so index.html redirect check passes
     }
     window.location.href = '/';
   }
@@ -372,8 +373,16 @@
   function logout() {
     currentToken = null;
     currentUser = null;
+    // Clear all auth data
     localStorage.removeItem('sf-session');
     localStorage.removeItem('actualbudget-token');
+    // Clear any Actual Budget stored tokens
+    var keys = Object.keys(localStorage);
+    keys.forEach(function(k) {
+      if (k.includes('token') || k.includes('Token') || k.includes('actual')) {
+        localStorage.removeItem(k);
+      }
+    });
     show('login-view');
   }
 

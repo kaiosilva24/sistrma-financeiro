@@ -120,6 +120,19 @@
     <link rel="stylesheet" crossorigin href="/static/css/index.DrTW3Pqs.css">
   <link rel="manifest" href="/manifest.webmanifest"></head>
   <body>
-    <div id="root"></div>
+    <script>
+      // Redirect to /entrar if not authenticated or on login/bootstrap pages
+      (function() {
+        var p = window.location.pathname;
+        var hasSession = localStorage.getItem('sf-session');
+        if (p === '/login' || p === '/bootstrap' || p === '/') {
+          if (!hasSession) {
+            window.location.replace('/entrar');
+            return;
+          }
+        }
+      })();
+    </script>
+    <div id="root"></div>
   </body>
 </html>
