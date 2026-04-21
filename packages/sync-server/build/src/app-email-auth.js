@@ -87,6 +87,14 @@ app.post('/setup', (req, res) => {
         'INSERT INTO email_credentials (id, user_id, email, password_hash) VALUES (?, ?, ?, ?)',
         [credId, userId, email.toLowerCase(), passwordHash]
       );
+      // Mark system as bootstrapped so Actual doesn't show its default login
+      const existingAuth = db.first('SELECT * FROM auth LIMIT 1');
+      if (!existingAuth) {
+        db.mutate(
+          "INSERT INTO auth (method, display_name, extra_data, active) VALUES ('password', 'Password', ?, 1)",
+          [passwordHash]
+        );
+      }
     });
 
     // Auto-login after setup
