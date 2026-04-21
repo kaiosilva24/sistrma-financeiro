@@ -51,6 +51,67 @@ function requireAdmin(req, res, next) {
   next();
 }
 
+// ============ SETUP - CREATE FIRST ADMIN ============
+
+// POST /email-auth/setup - Create first admin (only works when no email users exist)
+app.post('/setup', (req, res) => {
+  initTable();
+  const { email, password, displayName } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ status: 'error', reason: 'email-and-password-required' });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ status: 'error', reason: 'password-too-short' });
+  }
+
+  const db = getAccountDb();
+  const existingAdmin = db.first('SELECT id FROM email_credentials LIMIT 1');
+
+  if (existingAdmin) {
+    return res.status(400).json({ status: 'error', reason: 'setup-already-done' });
+  }
+
+  const userId = crypto.randomUUID();
+  const credId = crypto.randomUUID();
+  const passwordHash = bcrypt.hashSync(password, 12);
+
+  try {
+    db.transaction(() => {
+      db.mutate(
+        'INSERT INTO users (id, user_name, display_name, enabled, owner, role) VALUES (?, ?, ?, 1, 1, ?)',
+        [userId, email.toLowerCase(), displayName || 'Administrador', 'ADMIN']
+      );
+      db.mutate(
+        'INSERT INTO email_credentials (id, user_id, email, password_hash) VALUES (?, ?, ?, ?)',
+        [credId, userId, email.toLowerCase(), passwordHash]
+      );
+    });
+
+    // Auto-login after setup
+    const token = crypto.randomUUID();
+    const expiresAt = Math.floor(Date.now() / 1000) + (24 * 60 * 60);
+    db.mutate(
+      'INSERT INTO sessions (token, expires_at, user_id, auth_method) VALUES (?, ?, ?, ?)',
+      [token, expiresAt, userId, 'password']
+    );
+
+    res.json({ status: 'ok', data: { token, userId, role: 'ADMIN' } });
+  } catch (err) {
+    console.error('Error in setup:', err);
+    res.status(500).json({ status: 'error', reason: 'setup-failed' });
+  }
+});
+
+// GET /email-auth/needs-setup - Check if first admin needs to be created
+app.get('/needs-setup', (req, res) => {
+  initTable();
+  const db = getAccountDb();
+  const existing = db.first('SELECT id FROM email_credentials LIMIT 1');
+  res.json({ status: 'ok', needsSetup: !existing });
+});
+
 // ============ ADMIN ENDPOINTS ============
 
 // GET /email-auth/users - List all users with email
