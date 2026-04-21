@@ -374,11 +374,40 @@
     localStorage.setItem('sf-session', JSON.stringify(currentUser));
   }
 
-  function goToFinanceiro() {
+  // Escreve o token no IndexedDB que o Actual Budget usa internamente
+  function setActualToken(token) {
+    return new Promise(function(resolve) {
+      try {
+        var req = indexedDB.open('actual', 9);
+        req.onsuccess = function(e) {
+          try {
+            var db = e.target.result;
+            var tx = db.transaction(['asyncStorage'], 'readwrite');
+            var store = tx.objectStore('asyncStorage');
+            store.put(token, 'user-token');
+            tx.oncomplete = function() { db.close(); resolve(); };
+            tx.onerror = function() { db.close(); resolve(); };
+          } catch(err) { resolve(); }
+        };
+        req.onerror = function() { resolve(); };
+        // Se o banco nao existir ainda, cria com a store necessaria
+        req.onupgradeneeded = function(e) {
+          var db = e.target.result;
+          if (!db.objectStoreNames.contains('asyncStorage')) {
+            db.createObjectStore('asyncStorage');
+          }
+          if (!db.objectStoreNames.contains('files')) {
+            db.createObjectStore('files', { keyPath: 'filepath' });
+          }
+        };
+      } catch(err) { resolve(); }
+    });
+  }
+
+  async function goToFinanceiro() {
     if (currentToken) {
-      // Set token that Actual Budget uses internally
-      localStorage.setItem('actualbudget-token', currentToken);
-      // sf-session stays so index.html redirect check passes
+      // Escreve o token no IndexedDB do Actual Budget para auto-login
+      await setActualToken(currentToken);
     }
     window.location.href = '/';
   }

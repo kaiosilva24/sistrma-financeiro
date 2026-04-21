@@ -64,9 +64,9 @@ app.get('/entrar', (req, res) => {
 // Redireciona SEMPRE para /entrar (login com email+senha).
 // ============================================================
 app.get('/login', (_req, res) => res.redirect(301, '/entrar'));
-app.get('/login/*', (_req, res) => res.redirect(301, '/entrar'));
+app.get('/login/{*splat}', (_req, res) => res.redirect(301, '/entrar'));
 app.get('/bootstrap', (_req, res) => res.redirect(301, '/entrar'));
-app.get('/bootstrap/*', (_req, res) => res.redirect(301, '/entrar'));
+app.get('/bootstrap/{*splat}', (_req, res) => res.redirect(301, '/entrar'));
 app.get('/mode', (req, res) => {
     res.send(config.get('mode'));
 });
