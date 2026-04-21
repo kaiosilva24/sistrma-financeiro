@@ -1,0 +1,23 @@
+export declare function getUserByUsername(userName: any): any;
+export declare function getUserById(userId: any): any;
+export declare function getFileById(fileId: any): any;
+export declare function validateRole(roleId: any): boolean;
+export declare function getOwnerCount(): any;
+export declare function getOwnerId(): any;
+export declare function getFileOwnerId(fileId: any): any;
+export declare function getAllUsers(): any;
+export declare function insertUser(userId: any, userName: any, displayName: any, enabled: any, role: any): void;
+export declare function updateUser(userId: any, userName: any, displayName: any, enabled: any): void;
+export declare function updateUserWithRole(userId: any, userName: any, displayName: any, enabled: any, roleId: any): void;
+export declare function deleteUser(userId: any): any;
+export declare function deleteUserAccess(userId: any): any;
+export declare function transferAllFilesFromUser(ownerId: any, oldUserId: any): void;
+export declare function updateFileOwner(ownerId: any, fileId: any): void;
+export declare function getUserAccess(fileId: any, userId: any, isAdmin: any): any;
+export declare function countUserAccess(fileId: any, userId: any): any;
+export declare function checkFilePermission(fileId: any, userId: any): any;
+export declare function addUserAccess(userId: any, fileId: any): void;
+export declare function deleteUserAccessByFileId(userIds: any, fileId: any): number;
+export declare function getAllUserAccess(fileId: any): any;
+export declare function getOpenIDConfig(): any;
+//# sourceMappingURL=user-service.d.ts.map

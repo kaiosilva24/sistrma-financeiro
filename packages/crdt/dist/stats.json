@@ -1,0 +1,203 @@
+{
+  "version": 2,
+  "tree": {
+    "name": "root",
+    "children": [
+      {
+        "name": "index.js",
+        "children": [
+          {
+            "name": "\u0000rolldown/runtime.js",
+            "uid": "d85f1575-1"
+          },
+          {
+            "name": "C:/Users/kaiob/Downloads/sistema financeiro20-04/packages/crdt/src",
+            "children": [
+              {
+                "name": "proto/sync_pb.js",
+                "uid": "d85f1575-3"
+              },
+              {
+                "name": "crdt",
+                "children": [
+                  {
+                    "uid": "d85f1575-5",
+                    "name": "merkle.ts"
+                  },
+                  {
+                    "uid": "d85f1575-7",
+                    "name": "timestamp.ts"
+                  },
+                  {
+                    "uid": "d85f1575-9",
+                    "name": "index.ts"
+                  }
+                ]
+              },
+              {
+                "uid": "d85f1575-11",
+                "name": "index.ts"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isRoot": true
+  },
+  "nodeParts": {
+    "d85f1575-1": {
+      "renderedLength": 1375,
+      "gzipLength": 0,
+      "brotliLength": 0,
+      "metaUid": "d85f1575-0"
+    },
+    "d85f1575-3": {
+      "renderedLength": 33136,
+      "gzipLength": 0,
+      "brotliLength": 0,
+      "metaUid": "d85f1575-2"
+    },
+    "d85f1575-5": {
+      "renderedLength": 2702,
+      "gzipLength": 0,
+      "brotliLength": 0,
+      "metaUid": "d85f1575-4"
+    },
+    "d85f1575-7": {
+      "renderedLength": 5321,
+      "gzipLength": 0,
+      "brotliLength": 0,
+      "metaUid": "d85f1575-6"
+    },
+    "d85f1575-9": {
+      "renderedLength": 0,
+      "gzipLength": 0,
+      "brotliLength": 0,
+      "metaUid": "d85f1575-8"
+    },
+    "d85f1575-11": {
+      "renderedLength": 302,
+      "gzipLength": 0,
+      "brotliLength": 0,
+      "metaUid": "d85f1575-10"
+    }
+  },
+  "nodeMetas": {
+    "d85f1575-0": {
+      "id": "\u0000rolldown/runtime.js",
+      "moduleParts": {
+        "index.js": "d85f1575-1"
+      },
+      "imported": [],
+      "importedBy": []
+    },
+    "d85f1575-2": {
+      "id": "C:/Users/kaiob/Downloads/sistema financeiro20-04/packages/crdt/src/proto/sync_pb.js",
+      "moduleParts": {
+        "index.js": "d85f1575-3"
+      },
+      "imported": [
+        {
+          "uid": "d85f1575-12"
+        }
+      ],
+      "importedBy": [
+        {
+          "uid": "d85f1575-10"
+        }
+      ]
+    },
+    "d85f1575-4": {
+      "id": "C:/Users/kaiob/Downloads/sistema financeiro20-04/packages/crdt/src/crdt/merkle.ts",
+      "moduleParts": {
+        "index.js": "d85f1575-5"
+      },
+      "imported": [],
+      "importedBy": [
+        {
+          "uid": "d85f1575-8"
+        }
+      ]
+    },
+    "d85f1575-6": {
+      "id": "C:/Users/kaiob/Downloads/sistema financeiro20-04/packages/crdt/src/crdt/timestamp.ts",
+      "moduleParts": {
+        "index.js": "d85f1575-7"
+      },
+      "imported": [
+        {
+          "uid": "d85f1575-13"
+        }
+      ],
+      "importedBy": [
+        {
+          "uid": "d85f1575-8"
+        }
+      ]
+    },
+    "d85f1575-8": {
+      "id": "C:/Users/kaiob/Downloads/sistema financeiro20-04/packages/crdt/src/crdt/index.ts",
+      "moduleParts": {
+        "index.js": "d85f1575-9"
+      },
+      "imported": [
+        {
+          "uid": "d85f1575-4"
+        },
+        {
+          "uid": "d85f1575-6"
+        }
+      ],
+      "importedBy": [
+        {
+          "uid": "d85f1575-10"
+        }
+      ]
+    },
+    "d85f1575-10": {
+      "id": "C:/Users/kaiob/Downloads/sistema financeiro20-04/packages/crdt/src/index.ts",
+      "moduleParts": {
+        "index.js": "d85f1575-11"
+      },
+      "imported": [
+        {
+          "uid": "d85f1575-2"
+        },
+        {
+          "uid": "d85f1575-8"
+        }
+      ],
+      "importedBy": [],
+      "isEntry": true
+    },
+    "d85f1575-12": {
+      "id": "google-protobuf",
+      "moduleParts": {},
+      "imported": [],
+      "importedBy": [
+        {
+          "uid": "d85f1575-2"
+        }
+      ]
+    },
+    "d85f1575-13": {
+      "id": "murmurhash",
+      "moduleParts": {},
+      "imported": [],
+      "importedBy": [
+        {
+          "uid": "d85f1575-6"
+        }
+      ]
+    }
+  },
+  "env": {
+    "rollup": "4.23.0"
+  },
+  "options": {
+    "gzip": false,
+    "brotli": false,
+    "sourcemap": false
+  }
+}

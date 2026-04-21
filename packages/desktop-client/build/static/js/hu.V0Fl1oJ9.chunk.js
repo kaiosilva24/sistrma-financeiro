@@ -1,0 +1,51 @@
+//#region locale/hu.json
+var Group = "Csoport";
+var Hold = "Tart";
+var Friday = "Péntek";
+var Help = "Segítség";
+var hu_default = {
+	Group,
+	Hold,
+	"Hold for next month": "Megtartani a következő hónapig",
+	"https://example.com": "https://example.com",
+	"Hold this amount:": "Ezt az összeget tartsa vissza:",
+	"(hidden)": "(rejtett)",
+	"(modified)": "(módosított)",
+	"(none)": "(semmi)",
+	"(Optional)": "(Nem kötelező)",
+	"(please select)": "(kérjük, válasszon)",
+	"<0>Balance:</0><1>{{amount}}</1>": "<0>Egyenleg:</0><1>{{amount}}</1>",
+	Friday,
+	"Generate new key": "Új kulcs generálása",
+	Help,
+	"I understand the risks, run Actual in the unsupported fallback mode": "Megértettem a kockázatokat, futtassa az Actual-t a nem támogatott tartalék üzemmódban",
+	"(+{{numHiddenPayees}} more)": "(+{{numHiddenPayees}} több)",
+	"{{count}} transactions_one": "{{count}} tranzakció",
+	"{{count}} transactions_other": "{{count}} tranzakció",
+	"(No payee)": "(Nincs kedvezményezett)",
+	"(nothing)": "(semmi)",
+	"{{accountName}} bank sync settings": "{{accountName}} bank szinkronizációs beállítások",
+	"{{categoryGroupName}} expense group categories": "{{categoryGroupName}} költségcsoport-kategóriák",
+	"(after weekend)": "(hétvége után)",
+	"(before weekend)": "(hétvége előtt)",
+	"(deleted)": "(törölt)",
+	"{{count}} associated rules_one": "{{count}} társított szabály",
+	"{{count}} associated rules_other": "{{count}} társított szabály",
+	"{{displayMonth}} end-of-month cleanup templates have been applied.": "{{displayMonth}} hó végi tisztítási sablonok lettek alkalmazva.",
+	"{{count}} uncategorized transactions_one": "{{count}} kategorizálatlan tranzakció",
+	"{{count}} uncategorized transactions_other": "{{count}} kategorizálatlan tranzakció",
+	"{{displayMonth}} budget templates have been applied.": "{{displayMonth}} költéségkeret sablon alkalmazva lett.",
+	"{{displayMonth}} budget templates have been overwritten.": "{{displayMonth}} költségkeret sablon felül lett írva.",
+	"{{displayMonth}} budgets have all been set to last month's budgeted amounts.": "{{displayMonth}}  költségkeretek mindegyike a múlt havi költségkeret összegekre lett beállítva.",
+	"{{displayMonth}} budgets have all been set to zero.": "{{displayMonth}} költségkeretek mindegyike nullára lett állítva.",
+	"{{endOccurrences}} times": "{{endOccurrences}} alkalommal",
+	"{{scheduleName}} is due {{distanceFromNow}} ({{formattedDate}})": "{{scheduleName}} {{distanceFromNow}} múlva esedékes ({{formattedDate}})",
+	"{{categoryName}} shortcuts": "{{categoryName}} gyorsbillentyűk",
+	"{{count}} payees_one": "{{count}} kedvezményezett",
+	"{{count}} payees_other": "{{count}} kedvezményezett",
+	"{{num}} more items...": "{{num}} további elem…"
+};
+//#endregion
+export { Friday, Group, Help, Hold, hu_default as default };
+
+//# sourceMappingURL=hu.V0Fl1oJ9.chunk.js.map

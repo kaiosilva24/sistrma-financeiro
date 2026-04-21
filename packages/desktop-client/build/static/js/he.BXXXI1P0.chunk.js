@@ -1,0 +1,25 @@
+//#region locale/he.json
+var he_default = {
+	"(deleted)": "(נמחק)",
+	"(give feedback)": "(מתן משוב)",
+	"(Optional)": "(רשות)",
+	"(before weekend)": "( לפני הסופ\"ש )",
+	"(please select)": "(בחר בבקשה)",
+	"(after weekend)": "(אחרי הסופ\"ש )",
+	"(hidden)": "(נסתר)",
+	"(modified)": "(שונה)",
+	"(none)": "(ללא)",
+	"(nothing)": "(כלום)",
+	"{{accountName}} bank sync settings": "הגדרות סנכרון בנק {{accountName}}",
+	"{{categoryGroupName}} expense group categories": "קטגוריות קבוצת הוצאות {{categoryGroupName}}",
+	"{{categoryName}} shortcuts": "קיצורי דרך {{categoryName}}",
+	"(+{{numHiddenPayees}} more)": "(עוד {{numHiddenPayees}}  + )",
+	"{{displayMonth}} budgets have all been set to zero.": "תקציבי {{displayMonth}} אותחלו לאפס.",
+	"{{endOccurrences}} times": "{{endOccurrences}} פעמים",
+	"{{selectedPayeeNames}}, and more": "{{selectedPayeeNames}}, ועוד",
+	"<0><0>Custom Report:</0></0> <2>{{name}}</2>": "<0><0>דו\"ח מותאם:</0></0> <2>{{name}}</2>"
+};
+//#endregion
+export { he_default as default };
+
+//# sourceMappingURL=he.BXXXI1P0.chunk.js.map

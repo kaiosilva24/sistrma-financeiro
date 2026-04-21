@@ -1,0 +1,18 @@
+//#region locale/sl.json
+var sl_default = {
+	"(+{{numHiddenPayees}} more)": "(+{{numHiddenPayees}} več)",
+	"(after weekend)": "(po koncu tedna)",
+	"(before weekend)": "(pred koncem tedna)",
+	"(deleted)": "(izbrisano)",
+	"(give feedback)": "(daj povratno informacijo)",
+	"(hidden)": "(skrito)",
+	"{{count}} transactions_one": "{{count}} transakcija",
+	"{{count}} transactions_two": "{{count}} transakciji",
+	"{{count}} transactions_few": "{{count}} transakcije",
+	"{{count}} transactions_other": "{{count}} transakcij",
+	"(projected)": "(predvideno)"
+};
+//#endregion
+export { sl_default as default };
+
+//# sourceMappingURL=sl.uQODHXVk.chunk.js.map
