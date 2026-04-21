@@ -61,7 +61,7 @@
     "install:server": "yarn workspaces focus @actual-app/sync-server --production",
     "constraints": "yarn constraints",
     "typecheck": "tsgo -p tsconfig.root.json --noEmit && lage typecheck",
-    "prepare": "husky"
+    "prepare": "node -e \"try{require('husky')()}catch(e){}\""
   },
   "devDependencies": {
     "@octokit/rest": "^22.0.1",
