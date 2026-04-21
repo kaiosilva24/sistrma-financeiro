@@ -10,7 +10,7 @@ playwright-report
 blob-report
 
 # production
-build
+# build (included for deployment)
 build-electron
 build-stats
 stats.json

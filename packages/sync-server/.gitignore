@@ -10,7 +10,7 @@ server-files
 test-user-files
 test-server-files
 fly.toml
-build/
+# build/ (included for deployment)
 *.crt
 *.pem
 *.key
