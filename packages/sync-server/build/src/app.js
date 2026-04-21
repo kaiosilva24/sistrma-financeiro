@@ -54,15 +54,10 @@ if (config.get('corsProxy.enabled')) {
 app.use('/admin', adminApp.handlers);
 app.use('/openid', openidApp.handlers);
 app.use('/email-auth', emailAuthApp.handlers);
-app.get('/admin-panel', (req, res) => {
+app.get('/entrar', (req, res) => {
     res.set('Content-Type', 'text/html');
     res.set('Cache-Control', 'no-store');
-    res.sendFile('admin-panel.html', { root: config.get('webRoot') });
-});
-app.get('/user-login', (req, res) => {
-    res.set('Content-Type', 'text/html');
-    res.set('Cache-Control', 'no-store');
-    res.sendFile('user-login.html', { root: config.get('webRoot') });
+    res.sendFile('entrar.html', { root: config.get('webRoot') });
 });
 app.get('/mode', (req, res) => {
     res.send(config.get('mode'));
