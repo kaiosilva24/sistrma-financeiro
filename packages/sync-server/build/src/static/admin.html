@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo - Sistema Financeiro</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .header {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 { font-size: 20px; color: #818cf8; }
+    .header .actions { display: flex; gap: 12px; }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: #6366f1; color: white; }
+    .btn-primary:hover { background: #4f46e5; }
+    .btn-danger { background: #ef4444; color: white; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-secondary { background: #334155; color: #e2e8f0; }
+    .btn-secondary:hover { background: #475569; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .card {
+      background: #1e293b;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card h2 { font-size: 18px; margin-bottom: 16px; color: #818cf8; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+    .form-row { display: flex; gap: 16px; }
+    .form-row .form-group { flex: 1; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #334155;
+    }
+    th { color: #94a3b8; font-weight: 500; font-size: 13px; text-transform: uppercase; }
+    td { font-size: 14px; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-admin { background: #312e81; color: #818cf8; }
+    .badge-basic { background: #1e3a5f; color: #60a5fa; }
+    .badge-active { background: #14532d; color: #4ade80; }
+    .badge-disabled { background: #450a0a; color: #f87171; }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+      z-index: 1000;
+      animation: slideIn 0.3s ease;
+    }
+    .toast-success { background: #14532d; color: #4ade80; border: 1px solid #166534; }
+    .toast-error { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
+    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: #1e293b;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      padding: 24px;
+      width: 460px;
+      max-width: 90vw;
+    }
+    .modal h3 { font-size: 18px; margin-bottom: 16px; color: #818cf8; }
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #64748b;
+    }
+    .login-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      background: #1e293b;
+      border-radius: 16px;
+      border: 1px solid #334155;
+      padding: 40px;
+      width: 400px;
+      max-width: 90vw;
+    }
+    .login-box h1 { text-align: center; margin-bottom: 8px; color: #818cf8; font-size: 24px; }
+    .login-box p { text-align: center; color: #64748b; margin-bottom: 24px; }
+    .error-msg { color: #f87171; font-size: 13px; text-align: center; margin-bottom: 12px; display: none; }
+  </style>
+</head>
+<body>
+  <!-- Admin Login -->
+  <div id="login-view" class="login-container">
+    <div class="login-box">
+      <h1>Painel Admin</h1>
+      <p>Faça login como administrador</p>
+      <div id="login-error" class="error-msg"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="admin@email.com">
+      </div>
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" id="login-password" placeholder="Sua senha">
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="adminLogin()">Entrar</button>
+      <p style="margin-top:16px"><a href="/" style="color:#64748b;text-decoration:none">← Voltar ao sistema</a></p>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="admin-view" style="display:none">
+    <div class="header">
+      <h1>Painel Administrativo</h1>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="showRegisterModal()">+ Novo Usuário</button>
+        <button class="btn btn-secondary" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="card">
+        <h2>Usuários Cadastrados</h2>
+        <div id="users-table">
+          <div class="empty-state">Carregando...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="register-modal" class="modal-overlay">
+    <div class="modal">
+      <h3>Cadastrar Novo Usuário</h3>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="usuario@email.com">
+      </div>
+      <div class="form-group">
+        <label>Nome de Exibição</label>
+        <input type="text" id="reg-name" placeholder="Nome do usuário">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres">
+        </div>
+        <div class="form-group">
+          <label>Perfil</label>
+          <select id="reg-role">
+            <option value="BASIC">Usuário</option>
+            <option value="ADMIN">Administrador</option>
+          </select>
+        </div>
+      </div>
+      <div id="reg-error" class="error-msg"></div>
+      <div style="display:flex;gap:12px;margin-top:16px">
+        <button class="btn btn-secondary" style="flex:1" onclick="closeRegisterModal()">Cancelar</button>
+        <button class="btn btn-primary" style="flex:1" onclick="registerUser()">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let adminToken = localStorage.getItem('admin-token');
+
+    if (adminToken) {
+      showAdminPanel();
+    }
+
+    async function adminLogin() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorEl = document.getElementById('login-error');
+
+      try {
+        const res = await fetch('/email-auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (data.status === 'ok') {
+          if (data.data.role !== 'ADMIN') {
+            errorEl.textContent = 'Acesso negado. Apenas administradores.';
+            errorEl.style.display = 'block';
+            return;
+          }
+          adminToken = data.data.token;
+          localStorage.setItem('admin-token', adminToken);
+          showAdminPanel();
+        } else {
+          errorEl.textContent = 'Email ou senha incorretos.';
+          errorEl.style.display = 'block';
+        }
+      } catch (e) {
+        errorEl.textContent = 'Erro de conexão.';
+        errorEl.style.display = 'block';
+      }
+    }
+
+    function showAdminPanel() {
+      document.getElementById('login-view').style.display = 'none';
+      document.getElementById('admin-view').style.display = 'block';
+      loadUsers();
+    }
+
+    function logout() {
+      adminToken = null;
+      localStorage.removeItem('admin-token');
+      document.getElementById('login-view').style.display = 'flex';
+      document.getElementById('admin-view').style.display = 'none';
+    }
+
+    async function loadUsers() {
+      try {
+        const res = await fetch('/email-auth/users', {
+          headers: { 'x-actual-token': adminToken }
+        });
+        const data = await res.json();
+
+        if (data.status === 'ok' && data.data.length > 0) {
+          let html = '<table><thead><tr><th>Email</th><th>Nome</th><th>Perfil</th><th>Status</th><th>Ações</th></tr></thead><tbody>';
+          data.data.forEach(u => {
+            html += `<tr>
+              <td>${u.email || u.user_name || '-'}</td>
+              <td>${u.display_name || '-'}</td>
+              <td><span class="badge ${u.role === 'ADMIN' ? 'badge-admin' : 'badge-basic'}">${u.role === 'ADMIN' ? 'Admin' : 'Usuário'}</span></td>
+              <td><span class="badge ${u.enabled ? 'badge-active' : 'badge-disabled'}">${u.enabled ? 'Ativo' : 'Inativo'}</span></td>
+              <td><button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Excluir</button></td>
+            </tr>`;
+          });
+          html += '</tbody></table>';
+          document.getElementById('users-table').innerHTML = html;
+        } else {
+          document.getElementById('users-table').innerHTML = '<div class="empty-state">Nenhum usuário cadastrado</div>';
+        }
+      } catch (e) {
+        document.getElementById('users-table').innerHTML = '<div class="empty-state">Erro ao carregar usuários</div>';
+      }
+    }
+
+    function showRegisterModal() {
+      document.getElementById('register-modal').classList.add('active');
+      document.getElementById('reg-error').style.display = 'none';
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('register-modal').classList.remove('active');
+      document.getElementById('reg-email').value = '';
+      document.getElementById('reg-name').value = '';
+      document.getElementById('reg-password').value = '';
+    }
+
+    async function registerUser() {
+      const email = document.getElementById('reg-email').value;
+      const displayName = document.getElementById('reg-name').value;
+      const password = document.getElementById('reg-password').value;
+      const role = document.getElementById('reg-role').value;
+      const errorEl = document.getElementById('reg-error');
+
+      try {
+        const res = await fetch('/email-auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-actual-token': adminToken
+          },
+          body: JSON.stringify({ email, password, displayName, role })
+        });
+        const data = await res.json();
+
+        if (data.status === 'ok') {
+          showToast('Usuário cadastrado com sucesso!', 'success');
+          closeRegisterModal();
+          loadUsers();
+        } else {
+          const msgs = {
+            'email-already-exists': 'Este email já está cadastrado.',
+            'email-and-password-required': 'Email e senha são obrigatórios.',
+            'password-too-short': 'Senha deve ter no mínimo 6 caracteres.',
+            'invalid-email': 'Email inválido.',
+          };
+          errorEl.textContent = msgs[data.reason] || 'Erro ao cadastrar.';
+          errorEl.style.display = 'block';
+        }
+      } catch (e) {
+        errorEl.textContent = 'Erro de conexão.';
+        errorEl.style.display = 'block';
+      }
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('Deseja realmente excluir este usuário?')) return;
+      try {
+        const res = await fetch(`/email-auth/users/${id}`, {
+          method: 'DELETE',
+          headers: { 'x-actual-token': adminToken }
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+          showToast('Usuário excluído.', 'success');
+          loadUsers();
+        } else {
+          showToast('Erro ao excluir.', 'error');
+        }
+      } catch (e) {
+        showToast('Erro de conexão.', 'error');
+      }
+    }
+
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast toast-${type}`;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
+    }
+
+    // Enter key support
+    document.getElementById('login-password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') adminLogin();
+    });
+  </script>
+</body>
+</html>

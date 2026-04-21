@@ -14,7 +14,10 @@ import * as pluggai from './app-pluggyai/app-pluggyai.js';
 import * as secretApp from './app-secrets.js';
 import * as simpleFinApp from './app-simplefin/app-simplefin.js';
 import * as syncApp from './app-sync.js';
+import * as emailAuthApp from './app-email-auth.js';
+import path from 'node:path';
 import { config } from './load-config.js';
+const __dirname_app = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 process.on('unhandledRejection', reason => {
     console.log('Rejection:', reason);
@@ -50,6 +53,9 @@ if (config.get('corsProxy.enabled')) {
 }
 app.use('/admin', adminApp.handlers);
 app.use('/openid', openidApp.handlers);
+app.use('/email-auth', emailAuthApp.handlers);
+app.get('/admin-panel', (req, res) => res.sendFile(path.join(__dirname_app, 'static', 'admin.html')));
+app.get('/user-login', (req, res) => res.sendFile(path.join(__dirname_app, 'static', 'login.html')));
 app.get('/mode', (req, res) => {
     res.send(config.get('mode'));
 });
