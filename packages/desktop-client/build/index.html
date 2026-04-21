@@ -146,7 +146,7 @@
           return false;
         }
 
-        // 1) Bloqueio imediato para hard navigation a rota bloqueada
+        // 1) Bloqueio imediato para hard navigation direta a rota bloqueada
         if (bloquearSeNecessario(true)) return;
 
         // 2) Sem sessao? Vai para /entrar
@@ -155,23 +155,14 @@
           return;
         }
 
-        // 3) Intercepta pushState/replaceState (sem limpar sessao - pode ser boot do React)
-        var origPush = history.pushState;
-        history.pushState = function() {
-          origPush.apply(this, arguments);
-          bloquearSeNecessario(false);
-        };
-        var origReplace = history.replaceState;
-        history.replaceState = function() {
-          origReplace.apply(this, arguments);
-          bloquearSeNecessario(false);
-        };
-        window.addEventListener('popstate', function() { bloquearSeNecessario(false); });
+        // 3) SEM interceptores pushState/replaceState - o React os usa durante boot
+        //    causando loop infinito. O polling abaixo e suficiente.
 
-        // 4) Polling apos 8s de graca para o React validar o token no IndexedDB
+        // 4) Polling apos 10s de graca para o React completar o boot e validar token
         setTimeout(function() {
-          setInterval(function() { bloquearSeNecessario(true); }, 500);
-        }, 8000);
+          _redirecionando = false;
+          setInterval(function() { bloquearSeNecessario(true); }, 1000);
+        }, 10000);
       })();
     </script>
     <script src="/auth-guard.js"></script>
