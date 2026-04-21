@@ -30,7 +30,9 @@ class FileUpdate extends FileBase {
     }
 }
 const boolToInt = bool => {
-    return bool ? 1 : 0;
+    // PostgreSQL uses native booleans; SQLite uses 0/1
+    // Return the boolean directly so PostgreSQL is happy
+    return bool ? true : false;
 };
 class FilesService {
     constructor(accountDb) {
@@ -61,19 +63,19 @@ class FilesService {
     find({ userId, limit = 1000 }) {
         const canSeeAll = isAdmin(userId);
         return (canSeeAll
-            ? this.accountDb.all('SELECT * FROM files WHERE deleted = FALSE OR deleted = 0 LIMIT ?', [
+            ? this.accountDb.all('SELECT * FROM files WHERE deleted = FALSE LIMIT ?', [
                 limit,
             ])
             : this.accountDb.all(`SELECT files.*
         FROM files
-        WHERE files.owner = ? and (deleted = FALSE OR deleted = 0)
+        WHERE files.owner = ? and deleted = FALSE
       UNION
        SELECT files.*
         FROM files
         JOIN user_access
           ON user_access.file_id = files.id
           AND user_access.user_id = ?
-       WHERE (files.deleted = FALSE OR files.deleted = 0) LIMIT ?`, [userId, userId, limit])).map(item => this.validate(item));
+       WHERE files.deleted = FALSE LIMIT ?`, [userId, userId, limit])).map(item => this.validate(item));
     }
     findUsersWithAccess(fileId) {
         const userAccess = this.accountDb.all(`SELECT UA.user_id as userId, users.display_name displayName, users.user_name userName

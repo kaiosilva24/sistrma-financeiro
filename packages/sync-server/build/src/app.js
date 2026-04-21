@@ -59,14 +59,9 @@ app.get('/entrar', (req, res) => {
     res.set('Cache-Control', 'no-store');
     res.sendFile('entrar.html', { root: config.get('webRoot') });
 });
-// ============================================================
-// BLOQUEIO TOTAL: Impede acesso ao login padrao do Actual Budget.
-// Redireciona SEMPRE para /entrar (login com email+senha).
-// ============================================================
+// Bloqueia rotas do login padrao do Actual Budget - redireciona para /entrar
 app.get('/login', (_req, res) => res.redirect(301, '/entrar'));
-app.get('/login/{*splat}', (_req, res) => res.redirect(301, '/entrar'));
 app.get('/bootstrap', (_req, res) => res.redirect(301, '/entrar'));
-app.get('/bootstrap/{*splat}', (_req, res) => res.redirect(301, '/entrar'));
 app.get('/mode', (req, res) => {
     res.send(config.get('mode'));
 });
