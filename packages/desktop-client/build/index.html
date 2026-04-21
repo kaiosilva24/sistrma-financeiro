@@ -122,29 +122,50 @@
   <body>
     <script>
       (function() {
+        // ============================================================
+        // BLOQUEIO TOTAL: Impede acesso ao login padrao do Actual Budget.
+        // Redireciona SEMPRE para /entrar (login com email+senha).
+        // ============================================================
+        var ROTAS_BLOQUEADAS = ['/login', '/bootstrap', '/config-server'];
+        var rotaAtual = window.location.pathname;
+
+        // Bloqueia imediatamente se estiver em rota proibida (hard navigation)
+        for (var i = 0; i < ROTAS_BLOQUEADAS.length; i++) {
+          if (rotaAtual === ROTAS_BLOQUEADAS[i] || rotaAtual.startsWith(ROTAS_BLOQUEADAS[i] + '/')) {
+            window.location.replace('/entrar');
+            throw new Error('Blocked route - redirecting to /entrar');
+          }
+        }
+
+        // Sem sessao ativa? Vai para login
         var hasSession = localStorage.getItem('sf-session');
         if (!hasSession) {
           window.location.replace('/entrar');
           return;
         }
-        // Watch for React Router navigating to /login
+
+        // Intercepta navegacao do React Router para rotas bloqueadas
+        function verificarRota() {
+          var p = window.location.pathname;
+          for (var i = 0; i < ROTAS_BLOQUEADAS.length; i++) {
+            if (p === ROTAS_BLOQUEADAS[i] || p.startsWith(ROTAS_BLOQUEADAS[i] + '/')) {
+              window.location.replace('/entrar');
+              return;
+            }
+          }
+        }
+
         var origPushState = history.pushState;
         history.pushState = function() {
           origPushState.apply(this, arguments);
-          checkRoute();
+          verificarRota();
         };
         var origReplaceState = history.replaceState;
         history.replaceState = function() {
           origReplaceState.apply(this, arguments);
-          checkRoute();
+          verificarRota();
         };
-        window.addEventListener('popstate', checkRoute);
-        function checkRoute() {
-          var p = window.location.pathname;
-          if (p === '/login' || p === '/bootstrap') {
-            window.location.replace('/entrar');
-          }
-        }
+        window.addEventListener('popstate', verificarRota);
       })();
     </script>
     <div id="root"></div>
