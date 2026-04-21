@@ -398,6 +398,8 @@
             var tx = db.transaction(['asyncStorage'], 'readwrite');
             var store = tx.objectStore('asyncStorage');
             store.put(token, 'user-token');
+            store.put(window.location.origin, 'server-url');
+            store.put(true, 'did-bootstrap');
             tx.oncomplete = function() { db.close(); resolve(); };
             tx.onerror = function() { db.close(); resolve(); };
           } catch(err) { resolve(); }
